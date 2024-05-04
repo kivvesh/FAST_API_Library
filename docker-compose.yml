@@ -1,0 +1,18 @@
+version: "3.5"
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    env_file:
+      - bd/.env
+    ports:
+      - "5433:5432"
+    volumes:
+      - $HOME/postgresql/library:/var/lib/postgresql/library
+    networks: ['mynetwork']
+
+networks:
+  mynetwork:
+    driver: bridge
+    name: mynetwork
