@@ -25,16 +25,19 @@ class SyncORMInsert:
             country: str | None = None,
             birthday: datetime.date | None = None,
     ):
-        author = AuthorOrm(
-            surname = surname,
-            first_name = first_name,
-            patronymic = patronymic,
-            birthday = birthday,
-            country = country
-        )
-        with session_factory() as session:
-            session.add(author)
-            session.commit()
+        try:
+            author = AuthorOrm(
+                surname = surname,
+                first_name = first_name,
+                patronymic = patronymic,
+                birthday = birthday,
+                country = country
+            )
+            with session_factory() as session:
+                session.add(author)
+                session.commit()
+        except Exception as error:
+            return {'error': error.__dict__}
 
     @staticmethod
     def insert_genre(
@@ -43,8 +46,13 @@ class SyncORMInsert:
     ):
         genre = GenreOrm(title=title,description = description)
         with session_factory() as session:
-            session.add_all([genre])
-            session.commit()
+            try:
+                session.add_all([genre])
+                session.commit()
+                return {'result':f'Жанр {title} создан'}
+            except Exception as error:
+                return {'error': error.__dict__}
+
 
     @staticmethod
     def insert_reader(
@@ -62,8 +70,12 @@ class SyncORMInsert:
             address = address
         )
         with session_factory() as session:
-            session.add(reader)
-            session.commit()
+            try:
+                session.add(reader)
+                session.commit()
+                return {'result':f'Читатель {surname} {first_name} создан'}
+            except Exception as error:
+                return {'error': error.__dict__}
 
     @staticmethod
     def insert_publish_place(

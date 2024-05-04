@@ -125,7 +125,7 @@ class GenreOrm(Base):
 
     id: Mapped[idpk]
     uuid_id: Mapped[uuidpk]
-    title: Mapped[str_256]
+    title: Mapped[str_256] = mapped_column(unique=True)
     description: Mapped[str | None]
     create_at: Mapped[created_at]
     update_at = Mapped[update_at]
