@@ -36,8 +36,10 @@ class SyncORMInsert:
             with session_factory() as session:
                 session.add(author)
                 session.commit()
+            res = {'result':f'Автор создан'}
+            return res
         except Exception as error:
-            return {'error': error.__dict__}
+            return {'error': error}
 
     @staticmethod
     def insert_genre(
