@@ -1,10 +1,9 @@
 import datetime
-import random
 
-from sqlalchemy import select, and_, func, update, insert
+from sqlalchemy import select, update, insert
 from sqlalchemy.orm import aliased, joinedload, selectinload
-from bd.database import sync_engine, async_engine, session_factory, async_session_factory, Base
-from bd.models import (metadata_obj, BooksOrm, AuthorOrm, Century, GenreOrm, ReadersOrm
+from src.db.database import sync_engine, async_engine, session_factory, async_session_factory, Base
+from src.db.models import (metadata_obj, BooksOrm, AuthorOrm, GenreOrm, ReadersOrm
 , books_readers_association, PublishPlaceOrm)
 
 

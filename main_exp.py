@@ -1,15 +1,15 @@
 import uuid
 
-from fastapi import FastAPI, Query, Path, Body, Cookie, Header, Response, status, Form, File, UploadFile, HTTPException, Depends
-from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi import FastAPI, Query, Path, Body, Cookie, Header, Response, File, UploadFile, HTTPException, Depends
+from fastapi.responses import RedirectResponse
 from fastapi.encoders import jsonable_encoder
 from enum import Enum
-from pydantic import BaseModel, Field, ValidationError
-from typing import Annotated, List, Any
+from pydantic import BaseModel, Field
+from typing import Annotated, Any
 import datetime
 
 from uuid import UUID
-from bd.queries.orm import SyncORMCreateTables
+from queries.orm import SyncORMCreateTables
 
 SyncORMCreateTables.create_tables()
 

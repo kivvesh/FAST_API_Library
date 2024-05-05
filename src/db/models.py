@@ -1,11 +1,10 @@
 import datetime
-import uuid
 
-from typing import Annotated, Optional, List, Union
+from typing import Annotated, List, Union
 from sqlalchemy import (Table, Column, Integer, String, MetaData
-                        ,ForeignKey, text, DateTime, CheckConstraint, Index, Date, Boolean)
+                        , ForeignKey, text, DateTime, CheckConstraint, Index)
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from bd.database import Base, str_256
+from src.db.database import Base, str_256
 import enum
 
 from uuid import UUID

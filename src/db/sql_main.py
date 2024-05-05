@@ -1,9 +1,7 @@
 #from queries.core import SyncCORE, AsyncCORE
-import asyncio
 import datetime
-import uuid
 
-from bd.queries.orm import AsyncORM, SyncORMCreateTables, SyncORMInsert, SyncORMSelect, SyncORMUpdeate
+from queries.orm import SyncORMCreateTables, SyncORMInsert, SyncORMSelect, SyncORMUpdeate
 
 SyncORMCreateTables.create_tables()#создание таблиц по моделям
 #добавление автора

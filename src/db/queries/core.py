@@ -1,7 +1,7 @@
 
 from sqlalchemy import insert, select, update
-from bd.database import sync_engine, async_engine
-from bd.models import metadata_obj, book_table
+from database import sync_engine, async_engine
+from models import metadata_obj, book_table
 
 
 class SyncCORE:

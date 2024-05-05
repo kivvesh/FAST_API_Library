@@ -3,7 +3,7 @@ from typing import Annotated
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
 from sqlalchemy import create_engine, String
-from bd.config import settings
+from src.db.config import settings
 
 #подключение к бд
 
