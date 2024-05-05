@@ -25,21 +25,18 @@ class SyncORMInsert:
             country: str | None = None,
             birthday: datetime.date | None = None,
     ):
-        try:
-            author = AuthorOrm(
-                surname = surname,
-                first_name = first_name,
-                patronymic = patronymic,
-                birthday = birthday,
-                country = country
-            )
-            with session_factory() as session:
-                session.add(author)
-                session.commit()
-            res = {'result':f'Автор создан'}
-            return res
-        except Exception as error:
-            return {'error': error}
+        author = AuthorOrm(
+            surname=surname,
+            first_name=first_name,
+            patronymic=patronymic,
+            birthday=birthday,
+            country=country
+        )
+        with session_factory() as session:
+            session.add(author)
+            session.commit()
+        res = {'result': f'Автор создан'}
+        return res
 
     @staticmethod
     def insert_genre(
@@ -48,12 +45,9 @@ class SyncORMInsert:
     ):
         genre = GenreOrm(title=title,description = description)
         with session_factory() as session:
-            try:
-                session.add_all([genre])
-                session.commit()
-                return {'result':f'Жанр {title} создан'}
-            except Exception as error:
-                return {'error': error.__dict__}
+            session.add_all([genre])
+            session.commit()
+            return {'result': f'Жанр {title} создан'}
 
 
     @staticmethod
@@ -72,12 +66,10 @@ class SyncORMInsert:
             address = address
         )
         with session_factory() as session:
-            try:
-                session.add(reader)
-                session.commit()
-                return {'result':f'Читатель {surname} {first_name} создан'}
-            except Exception as error:
-                return {'error': error.__dict__}
+            session.add(reader)
+            session.commit()
+            return {'result': f'Читатель {surname} {first_name} создан'}
+
 
     @staticmethod
     def insert_publish_place(
@@ -85,12 +77,14 @@ class SyncORMInsert:
             city: str
     ):
         publish_place = PublishPlaceOrm(
-            title = title,
-            city = city
+            title=title,
+            city=city
         )
         with session_factory() as session:
             session.add(publish_place)
             session.commit()
+        res = {'result': f"Издательство {title} создано"}
+        return res
 
     @staticmethod
     def insert_book(
@@ -119,6 +113,8 @@ class SyncORMInsert:
             session.add_all([book])
             session.flush()#команда для отправки данных в субд
             session.commit()
+        res = {'result': f'Книга {title} добавлена'}
+        return res
 
     @staticmethod
     def insert_book_reader(

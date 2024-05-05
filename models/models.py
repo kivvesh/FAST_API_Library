@@ -25,3 +25,15 @@ class AuthorInsert(PersonMixin):
     country: str = Field(max_length=256)
     birthday: datetime.date | None
 
+class PublishPlaceInsert(BaseModel):
+    title: str = Field(max_length=256)
+    city: str
+
+class BookInsert(BaseModel):
+    title: str = Field(max_length=256)
+    description: str | None
+    count_pages: int
+    year_publish: datetime.date
+    author_id: int | None
+    genre_id: int | None
+    publish_place_id: int | None

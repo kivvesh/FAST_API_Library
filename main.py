@@ -11,13 +11,24 @@ import datetime
 
 from uuid import UUID
 from bd.queries.orm import SyncORMCreateTables, SyncORMInsert
-from models.models import ReaderInsert, GenreInsert, AuthorInsert
+from models.models import (ReaderInsert, GenreInsert,
+                           AuthorInsert, PublishPlaceInsert,
+                           BookInsert)
 
-SyncORMCreateTables.create_tables()
 
 app = FastAPI(
 
 )
+
+@app.post('/create_table')
+async def create_table(
+
+):
+    try:
+        SyncORMCreateTables.create_tables()
+        return {'status': 200}
+    except:
+        raise HTTPException(status_code=400,detail='error')
 
 @app.post('/reader/add', summary='Add reader')
 async def insert_reader(
@@ -27,15 +38,19 @@ async def insert_reader(
         patronymic: Annotated[str | None, Query(max_length=256)] = None,
         address: Annotated[str | None, Query(max_length=256)] = None,
 ):
-    reader = ReaderInsert(
-        surname = surname,
-        first_name = firstname,
-        patronymic = patronymic,
-        phone_number = phone_number,
-        address = address
-    )
-    res = SyncORMInsert.insert_reader(**reader.dict())
-    return res
+    try:
+        reader = ReaderInsert(
+            surname = surname,
+            first_name = firstname,
+            patronymic = patronymic,
+            phone_number = phone_number,
+            address = address
+        )
+        res = SyncORMInsert.insert_reader(**reader.dict())
+        res['status'] = status.HTTP_201_CREATED
+        return res
+    except Exception as error:
+        raise HTTPException(status_code=400, detail= 'error')
 
 @app.post('/genre/add', summary='Add genre')
 async def insert_genre(
@@ -47,11 +62,12 @@ async def insert_genre(
             title = title,
             description = description
         )
-        status = SyncORMInsert.insert_genre(**genre.dict())
-        return  status
+        res = SyncORMInsert.insert_genre(**genre.dict())
+        res['status'] = status.HTTP_201_CREATED
+        return  res
     except Exception as error:
         # logging.error(error)
-        return {'error': str(error)}
+        raise HTTPException(status_code=400, detail= 'error')
 
 @app.post('/author/add', summary='Add author')
 async def add_author(
@@ -70,6 +86,51 @@ async def add_author(
             birthday = birthday
         )
         res = SyncORMInsert.insert_author(**author.dict())
+        res['status'] = status.HTTP_201_CREATED
         return res
     except Exception as error:
-        return {'error': str(error)}
+        logging.error(error)
+        raise HTTPException(status_code=400, detail= 'error')
+
+@app.post('/publish-place/add', summary='Add publish place')
+async def add_publish_place(
+        title: Annotated[str, Query(max_length=256)],
+        city: Annotated[str, Query(max_length=256)]
+):
+    try:
+        publish_place = PublishPlaceInsert(
+            title = title,
+            city = city
+        )
+        res = SyncORMInsert.insert_publish_place(**publish_place.dict())
+        res['status'] = status.HTTP_201_CREATED
+        return res
+    except Exception as error:
+        raise HTTPException(status_code=400, detail= 'error')
+
+@app.post('/book/add',summary='Add book')
+async def add_book(
+        title: Annotated[str, Query(description='Название книги')],
+        count_pages: Annotated[int, Query(description='Количество страниц')],
+        year_publish: Annotated[datetime.date, Query()],
+        publish_place_id: Annotated[int, Query()] = None,
+        author_id: Annotated[int, Query()] = None,
+        genre_id: Annotated[int, Query()] = None,
+        description: Annotated[str | None, Query()] = None,
+):
+    try:
+        book = BookInsert(
+            title = title,
+            description = description,
+            count_pages = count_pages,
+            year_publish = year_publish,
+            author_id = author_id,
+            genre_id = genre_id,
+            publish_place_id = publish_place_id,
+        )
+        res = SyncORMInsert.insert_book(**book.dict())
+        return res
+    except Exception as error:
+        logging.error(error)
+        raise HTTPException(status_code=400,detail='error')
+
