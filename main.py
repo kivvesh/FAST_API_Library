@@ -14,13 +14,7 @@ app = FastAPI(
     openapi_url='/api/openapi.json'
 )
 
-app.include_router(reader.router,prefix='/api/v1/reader',tags=['reader'])
-app.include_router(genre.router,prefix='/api/v1/genre',tags=['genre'])
-app.include_router(author.router,prefix='/api/v1/author',tags=['author'])
-app.include_router(publish_place.router,prefix='/api/v1/publish-place',tags=['publish-place'])
-app.include_router(book.router,prefix='/api/v1/book',tags=['book'])
-
-@app.post('/create_table')
+@app.post('/create_tables',tags=['Create tables'])
 async def create_table(
 
 ):
@@ -29,6 +23,14 @@ async def create_table(
         return {'status': 200}
     except:
         raise HTTPException(status_code=400,detail='error')
+
+app.include_router(reader.router,prefix='/api/v1/reader',tags=['reader'])
+app.include_router(genre.router,prefix='/api/v1/genre',tags=['genre'])
+app.include_router(author.router,prefix='/api/v1/author',tags=['author'])
+app.include_router(publish_place.router,prefix='/api/v1/publish-place',tags=['publish-place'])
+app.include_router(book.router,prefix='/api/v1/book',tags=['book'])
+
+
 
 
 

@@ -207,6 +207,7 @@ class SyncORMSelect:
         with session_factory() as session:
             query = (
                 select(BooksOrm)
+                .filter(BooksOrm.id == id)
             )
             res = session.execute(query).scalar()
         return res
@@ -220,28 +221,34 @@ class SyncORMSelect:
                 select(BooksOrm)
                 .filter(BooksOrm.title.contains(title))
             )
-            res = session.execute(query).scalar()
+            res = session.execute(query).all()
         return res
 
     @staticmethod
     def join_book_by_author_and_genre(
-            title: str | None = '',
-            genre: str = ''
+            id: int
     ):
         b = aliased(BooksOrm)
         a = aliased(AuthorOrm)
         g = aliased(GenreOrm)
+        p = aliased(PublishPlaceOrm)
         with session_factory() as session:
             query = (
                 select(
+                    b.uuid_id,
                     b.title,
-                    a.surname,
-                    g.title
+                    b.description,
+                    b.count_pages,
+                    b.year_publish,
+                    a.surname + ' ' + a.first_name + ' ' + a.patronymic,
+                    g.title,
+                    p.title
                 )
                 .select_from(b)
                 .join(a, a.id == b.author_id)
                 .join(g, g.id == b.genre_id)
-                .filter(b.title.contains(title),g.title.contains(genre))
+                .join(p, p.id == b.publish_place_id)
+                .filter(b.id == id)
             )
             res = session.execute(query).all()
         return res
@@ -253,7 +260,6 @@ class SyncORMSelect:
         b = aliased(BooksOrm)
         g = aliased(GenreOrm)
         a = aliased(AuthorOrm)
-
 
         with session_factory() as session:
             query = (
@@ -269,6 +275,29 @@ class SyncORMSelect:
             )
             res = session.execute(query).all()
         return res
+
+    @staticmethod
+    def select_genre_id(id):
+        g = aliased(GenreOrm)
+        with session_factory() as session:
+            query = (
+                select(g)
+                .filter(g.id == id)
+            )
+            res = session.execute(query).scalar()
+            return res
+
+    @staticmethod
+    def select_author_id(id):
+        a = aliased(AuthorOrm)
+        with session_factory() as session:
+            query = (
+                select(a)
+                .filter(a.id == id)
+            )
+            res = session.execute(query).scalar()
+            return res
+
 
     @staticmethod
     def select_books():

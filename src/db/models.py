@@ -43,7 +43,7 @@ class ReadersOrm(Base):
     phone_number: Mapped[str] = mapped_column(unique=True)
     address: Mapped[str | None]
     create_at: Mapped[created_at]
-    update_at = Mapped[update_at]
+    update_at: Mapped[update_at]
 
     books: Mapped[Union[List['BooksOrm'], None]] = relationship(
         secondary=books_readers_association
@@ -94,7 +94,7 @@ class PublishPlaceOrm(Base):
     title: Mapped[str] = mapped_column(unique=True)
     city: Mapped[str]
     create_at: Mapped[created_at]
-    update_at = Mapped[update_at]
+    update_at: Mapped[update_at]
 
     books: Mapped[list['BooksOrm']] = relationship(
         back_populates = 'publish_place'
@@ -127,7 +127,7 @@ class GenreOrm(Base):
     title: Mapped[str_256] = mapped_column(unique=True)
     description: Mapped[str | None]
     create_at: Mapped[created_at]
-    update_at = Mapped[update_at]
+    update_at: Mapped[update_at]
 
     books: Mapped[list['BooksOrm']] = relationship(
         back_populates = 'genre'

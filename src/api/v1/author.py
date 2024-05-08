@@ -1,11 +1,11 @@
 import datetime
 import logging
 
-from fastapi import APIRouter, HTTPException, status, Query
+from fastapi import APIRouter, HTTPException, status, Query, Path
 from typing import Annotated
 
-from src.models.models import AuthorInsert
-from src.db.queries.orm import SyncORMInsert
+from src.models.models import AuthorInsert, AuthorSelect, Message
+from src.db.queries.orm import SyncORMInsert, SyncORMSelect
 
 
 router = APIRouter()
@@ -32,3 +32,16 @@ async def add_author(
     except Exception as error:
         logging.error(error)
         raise HTTPException(status_code=400, detail= 'error')
+
+@router.get(
+    '/{id}',
+    summary = 'Get author by id',
+    response_model = AuthorSelect | Message
+)
+async def get_author_by_id(
+        id: Annotated[int, Path()]
+):
+    res = SyncORMSelect.select_author_id(id = id)
+    if res:
+        return AuthorSelect(**res.__dict__)
+    return Message(message=f'Автор с id {id} не найден')
