@@ -310,6 +310,17 @@ class SyncORMSelect:
         return res
 
     @staticmethod
+    def get_reader_by_id(id):
+        r = aliased(ReadersOrm)
+        with session_factory() as session:
+            query = (
+                select(r)
+                .filter(r.id == id)
+            )
+            res = session.execute(query).scalar()
+            return res
+
+    @staticmethod
     def select_books():
         with session_factory() as session:
             title_book = 'Small girl'

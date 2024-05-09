@@ -71,3 +71,6 @@ class AuthorSelect(CreateUpdateMixin, AuthorInsert, IdUUIDMixen):
 
 class PublishPlaceSelect(CreateUpdateMixin, PublishPlaceInsert, IdUUIDMixen):
     pass
+
+class ReaderSelect(CreateUpdateMixin, ReaderInsert, IdUUIDMixen):
+    pass

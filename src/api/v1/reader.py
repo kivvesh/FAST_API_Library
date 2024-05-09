@@ -1,8 +1,8 @@
-from fastapi import APIRouter, Query, status, HTTPException
+from fastapi import APIRouter, Query, status, HTTPException, Path
 from typing import Annotated
 
-from src.db.queries.orm import SyncORMInsert
-from src.models.models import ReaderInsert
+from src.db.queries.orm import SyncORMInsert, SyncORMSelect
+from src.models.models import ReaderInsert, ReaderSelect, Message
 
 router = APIRouter()
 
@@ -27,3 +27,17 @@ async def insert_reader(
         return res
     except Exception as error:
         raise HTTPException(status_code=400, detail= 'error')
+
+@router.get(
+    '/id/{id}',
+    summary='Get reader by id',
+    response_model=ReaderSelect | Message
+)
+async def get_reader_by_id(
+        id: Annotated[int, Path()]
+):
+    res = SyncORMSelect.get_reader_by_id(id = id)
+    if res:
+        reader = ReaderSelect(**res.__dict__)
+        return reader
+    return Message(message = f'Читатель с id {id} не найден')
