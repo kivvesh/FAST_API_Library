@@ -298,6 +298,16 @@ class SyncORMSelect:
             res = session.execute(query).scalar()
             return res
 
+    @staticmethod
+    def select_publish_place_by_id(id):
+        pp = aliased(PublishPlaceOrm)
+        with session_factory() as session:
+            query = (
+                select(pp)
+                .filter(pp.id == id)
+            )
+            res = session.execute(query).scalar()
+        return res
 
     @staticmethod
     def select_books():

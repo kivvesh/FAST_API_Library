@@ -68,3 +68,6 @@ class GenreSelect(CreateUpdateMixin,GenreInsert,IdUUIDMixen):
 
 class AuthorSelect(CreateUpdateMixin, AuthorInsert, IdUUIDMixen):
     pass
+
+class PublishPlaceSelect(CreateUpdateMixin, PublishPlaceInsert, IdUUIDMixen):
+    pass

@@ -1,8 +1,8 @@
-from fastapi import APIRouter, Query, HTTPException, status
+from fastapi import APIRouter, Query, HTTPException, status, Path
 from typing import Annotated
 
-from src.db.queries.orm import SyncORMInsert
-from src.models.models import PublishPlaceInsert
+from src.db.queries.orm import SyncORMInsert, SyncORMSelect
+from src.models.models import PublishPlaceInsert, PublishPlaceSelect, Message
 
 
 router = APIRouter()
@@ -22,3 +22,17 @@ async def add_publish_place(
         return res
     except Exception as error:
         raise HTTPException(status_code=400, detail= 'error')
+
+@router.get(
+    '/id/{id}',
+    summary='Get publish place by id',
+    response_model = PublishPlaceSelect | Message
+)
+async  def get_publish_place_id(
+        id: Annotated[int, Path()]
+):
+    res = SyncORMSelect.select_publish_place_by_id(id = id)
+    if res:
+        publish_place = PublishPlaceSelect(**res.__dict__)
+        return publish_place
+    return Message(message = f'Издательство с id {id} не найдено')
