@@ -1,10 +1,10 @@
 import datetime
 import logging
-from fastapi import APIRouter, HTTPException, status, Query, Path
+from fastapi import APIRouter, HTTPException, status, Query, Path, Body
 from typing import Annotated
 
 from src.models.models import BookInsert, BookSelect, Message, BookJoin
-from src.db.queries.orm import SyncORMInsert, SyncORMSelect
+from src.db.queries.orm import SyncORMInsert, SyncORMSelect, SyncORMUpdate
 
 
 router = APIRouter()
@@ -83,4 +83,14 @@ async def join_book(
         return book
     message = Message(message = f'Книга с id {id} не найдена')
     return message
+
+@router.put(
+    '/update/{id}',
+    summary = 'Update book by id'
+)
+async def update_book(
+        id: Annotated[int, Path(description='Id book')],
+        book: Annotated[BookInsert, Body()]
+):
+    SyncORMUpdate.update_book(book_id=id,**book.dict())
 

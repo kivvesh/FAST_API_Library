@@ -170,7 +170,7 @@ class SyncORMInsert:
             session.execute(query)
             session.commit()
 
-class SyncORMUpdeate:
+class SyncORMUpdate:
     @staticmethod
     def update_book(
             book_id: int,
@@ -235,6 +235,7 @@ class SyncORMSelect:
         with session_factory() as session:
             query = (
                 select(
+                    b.id,
                     b.uuid_id,
                     b.title,
                     b.description,

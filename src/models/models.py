@@ -49,8 +49,7 @@ class BookInsert(BaseModel):
 class BookSelect(CreateUpdateMixin,BookInsert,IdUUIDMixen):
     is_book: bool
 
-class BookJoin(BaseModel):
-    uuid_id: uuid.UUID
+class BookJoin(IdUUIDMixen):
     title: str
     description: str
     count_pages: int
