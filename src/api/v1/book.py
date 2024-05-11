@@ -86,11 +86,17 @@ async def join_book(
 
 @router.put(
     '/update/{id}',
-    summary = 'Update book by id'
+    summary = 'Update book by id',
+    response_model =  Message
 )
 async def update_book(
         id: Annotated[int, Path(description='Id book')],
         book: Annotated[BookInsert, Body()]
 ):
-    SyncORMUpdate.update_book(book_id=id,**book.dict())
+    try:
+        SyncORMUpdate.update_book(book_id=id,**book.dict())
+        return Message(message = f'Книга с id {id} обновилась')
+    except:
+        return Message(message = f'Книга с id {id} не обновилась')
+
 
