@@ -98,5 +98,3 @@ async def update_book(
         return Message(message = f'Книга с id {id} обновилась')
     except:
         return Message(message = f'Книга с id {id} не обновилась')
-
-
