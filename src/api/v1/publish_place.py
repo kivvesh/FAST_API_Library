@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Query, HTTPException, status, Path
 from typing import Annotated
 
-from src.db.queries.orm import SyncORMInsert, SyncORMSelect
-from src.models.models import PublishPlaceInsert, PublishPlaceSelect, Message
+from db.queries.orm import SyncORMInsert, SyncORMSelect
+from models.models import PublishPlaceInsert, PublishPlaceSelect, Message
 
 
 router = APIRouter()

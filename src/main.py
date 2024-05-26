@@ -4,8 +4,8 @@ from fastapi import FastAPI, Query, status, HTTPException
 from typing import Annotated
 import datetime
 
-from src.api.v1 import reader, genre, author, publish_place, book
-from src.db.queries.orm import SyncORMCreateTables
+from api.v1 import reader, genre, author, publish_place, book
+from db.queries.orm import SyncORMCreateTables
 
 
 app = FastAPI(

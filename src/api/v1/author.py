@@ -4,8 +4,8 @@ import logging
 from fastapi import APIRouter, HTTPException, status, Query, Path
 from typing import Annotated
 
-from src.models.models import AuthorInsert, AuthorSelect, Message
-from src.db.queries.orm import SyncORMInsert, SyncORMSelect
+from models.models import AuthorInsert, AuthorSelect, Message
+from db.queries.orm import SyncORMInsert, SyncORMSelect
 
 
 router = APIRouter()

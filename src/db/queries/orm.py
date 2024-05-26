@@ -1,10 +1,23 @@
 import datetime
+import logging
 
-from sqlalchemy import select, update, insert
+import psycopg2
+from sqlalchemy import select, update, insert, exc
 from sqlalchemy.orm import aliased, joinedload, selectinload
-from src.db.database import sync_engine, async_engine, session_factory, async_session_factory, Base
-from src.db.models import (metadata_obj, BooksOrm, AuthorOrm, GenreOrm, ReadersOrm
+from db.database import sync_engine, async_engine, session_factory, async_session_factory, Base
+from db.models import (metadata_obj, BooksOrm, AuthorOrm, GenreOrm, ReadersOrm
 , books_readers_association, PublishPlaceOrm)
+
+
+class SyncORMCheckConnectDB:
+    @staticmethod
+    def connect_db():
+        try:
+            res = sync_engine.connect()
+            return {'connect': True}
+        except exc.OperationalError as error:
+            #logging.error(error)
+            return error
 
 
 class SyncORMCreateTables:
